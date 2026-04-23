@@ -139,4 +139,66 @@ def total_summary():
 
     return expense_type_data
 
+
+def generate_insights():
+    rec = load_expenditure()
+
+    if not rec:
+        print("No data available")
+        return
+
+    total = sum(e["amount"] for e in rec)
+    avg_amount= total / len(rec)
+
+    highest = max(rec, key=lambda x: x["amount"])
+    lowest = min(rec, key=lambda x: x["amount"])
+
+    print("\n*******************INSIGHTS****************")
+    print(f"Total Spending: ₹{total}")
+    print(f"Average Expense: ₹{avg_amount:.2f}")
+    print(f"Highest Expense: ₹{highest['amount']} ({highest['expense_type']})")
+    print(f"Lowest Expense: ₹{lowest['amount']} ({lowest['expense_type']})")
     
+
+def main():
+    storage_setup()
+
+    while True:
+        print("\n====== Expense Tracker ======")
+        print("1. Add Expense")
+        print("2. View Expenses")
+        print("3. Delete Expense")
+        print("4. Search Expense")
+        print("5. Monthly Summary")
+        print("6. Overall Summary")
+        print("7. Insights")
+        print("8. Exit")
+
+        ch = input("Enter choice: ")
+
+        if ch == "1":
+            add_expense()
+        elif ch == "2":
+            show_expenses()
+        elif ch == "3":
+            delete_expense()
+        elif ch == "4":
+            search_expense()
+        elif ch == "5":
+            res = monthly_report()
+            if res:
+                data, m = res
+                show_chart(data, f"Monthly ({m})")
+        elif ch == "6":
+            data = total_summary()
+            show_chart(data, "Overall")
+        elif ch == "7":
+            generate_insights()
+        elif ch == "8":
+            break
+        else:
+            print("Invalid choice")
+
+
+if __name__ == "__main__":
+    main()
