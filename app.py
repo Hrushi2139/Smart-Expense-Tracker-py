@@ -1,14 +1,13 @@
-while True:
-    print("\n1. Add Expense");
-    print("2. View Expense");
-    print("3. Exit")
-    chOpt=input("Enter your Option: ");
-    if chOpt == "1":
-        print("Add Expense Selected");
-    elif chOpt == "2":
-        print("View Expenses Selected");
-    elif chOpt == "3":
-        print("Exiting...");
-        break
-    else:
-        print("Invalid Option");
+import csv
+import os
+from datetime import datetime
+from collections import defaultdict
+import matplotlib.pyplot as plt
+
+DATA_FILE ="expenditure.csv"
+
+def storage_setup():
+    if not os.path.exists(DATA_FILE):
+        with open(DATA_FILE, "w", newline="") as f:
+            writer = csv.writer(f)
+            writer.writerow(["id", "date", "category", "amount", "description"])
