@@ -86,3 +86,29 @@ def search_expense():
 
     if not found:
         print("No matching results")
+
+
+def monthly_report():
+    rec = load_expenditure()
+    month = input("Enter month (YYYY-MM): ")
+
+    total = 0
+    expense_type_data = defaultdict(float)
+
+    for e in rec:
+        if e["expenditure_date"].startswith(month):
+            total += e["amount"]
+            expense_type_data[e["expense_type"]] += e["amount"]
+
+    if total == 0:
+        print("No data found")
+        return None
+
+    print(f"Total: ₹{total}")
+    for c, a in expense_type_data.items():
+        print(f"{c}: ₹{a}")
+
+    return expense_type_date, month
+
+
+    
