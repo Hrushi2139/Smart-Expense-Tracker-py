@@ -30,8 +30,8 @@ def add_expense():
         amount = float(input("Enter amount: "))
         desc = input("Enter desc: ")
 
-        data = load_expenditure()
-        new_id = len(data) + 1
+        rec = load_expenditure()
+        new_id = len(rec) + 1
 
         with open(DATA_FILE, "a", newline="") as f:
             writer = csv.writer(f)
@@ -108,7 +108,35 @@ def monthly_report():
     for c, a in expense_type_data.items():
         print(f"{c}: ₹{a}")
 
-    return expense_type_date, month
+    return expense_type_data, month
 
+
+def show_chart(expense_type_data, title_name):
+    if not expense_type_data:
+        return
+
+    chart_labels = list(expense_type_data.keys())
+    chart_values = list(expense_type_data.values())
+
+    plt.pie(chart_values, labels=chart_labels, autopct="%1.1f%%")
+    plt.title(title_name)
+    plt.show()
+
+
+def total_summary():
+    rec = load_expenditure()
+
+    total = 0
+    expense_type_data = defaultdict(float)
+
+    for e in rec:
+        total += e["amount"]
+        expense_type_data[e["expense_type"]] += e["amount"]
+
+    print(f"\nTotal: ₹{total}")
+    for c, a in expense_type_data.items():
+        print(f"{c}: ₹{a}")
+
+    return expense_type_data
 
     
