@@ -11,3 +11,12 @@ def storage_setup():
         with open(DATA_FILE, "w", newline="") as f:
             writer = csv.writer(f)
             writer.writerow(["id", "date", "category", "amount", "description"])
+
+def load_expenditure():
+    rec = []
+    with open(DATA_FILE, "r") as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            row["amount"] = float(row["amount"])
+            rec.append(row)
+    return rec
